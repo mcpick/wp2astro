@@ -9,9 +9,594 @@
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>WP2Astro — WordPress to Astro, Powered by AI Agents</title>
+		<meta name="description" content="A free CLI tool that converts your WordPress site into a blazing-fast Astro project. Run it locally, in Claude Code, or in Codex." />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<!-- Nav -->
+		<nav>
+			<div class="nav-inner">
+				<div class="nav-left">
+					<a href="/" class="nav-logo">
+						<svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+							<rect width="28" height="28" rx="6" fill="#7c3aed"/>
+							<path d="M8 19L14 9L20 19" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M10.5 15H17.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+						</svg>
+						<span>WP2Astro</span>
+					</a>
+					<div class="nav-links">
+						<a href="#features">Features</a>
+						<a href="#how-it-works">How it works</a>
+						<a href="#">Docs</a>
+					</div>
+				</div>
+				<div class="nav-right">
+					<a href="https://github.com/wp2astro" class="nav-icon" aria-label="GitHub">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+					</a>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Hero -->
+		<section class="hero">
+			<div class="container hero-container">
+				<div class="hero-icon">
+					<svg width="40" height="40" viewBox="0 0 28 28" fill="none">
+						<path d="M8 19L14 9L20 19" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M10.5 15H17.5" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
+					</svg>
+				</div>
+				<h1>The Unified<br/>WordPress-to-Astro<br/><span class="gradient-text">Migration Tool</span></h1>
+				<p class="hero-desc">
+					Convert your WordPress site into a blazing-fast Astro project with one command.<br/>
+					Powered by AI agents. Free and open source.
+				</p>
+				<div class="hero-actions">
+					<a href="#get-started" class="btn-primary">Get started</a>
+					<a href="#how-it-works" class="btn-outline">Read the Documentation</a>
+				</div>
+				<p class="hero-sub">Run in Claude Code, Codex, or locally. Zero config.</p>
+			</div>
+			<!-- Terminal -->
+			<div class="container">
+				<div class="terminal">
+					<div class="terminal-bar">
+						<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+					</div>
+					<div class="terminal-body">
+						<pre><code><span class="t-g">$</span> <span class="t-p">npx @wp2astro/convert</span> --url https://myblog.com
+
+<span class="t-d">[AGENT]</span> scanning 247 posts, 12 pages, 3 custom post types...
+<span class="t-d">[AGENT]</span> analyzing theme: twentytwentyfour → 4 layouts, 12 components detected
+<span class="t-d">[AGENT]</span> converting plugins: yoast seo → @astrojs/sitemap, contact-form-7 → native form
+<span class="t-d">[AGENT]</span> generating astro components... src/layouts/Base.astro ✓
+<span class="t-d">[AGENT]</span> generating content collections... 247 posts converted ✓
+
+<span class="t-green">✓</span> conversion complete → /output/my-astro-site
+<span class="t-b">ℹ</span> lighthouse: performance 98 | accessibility 100 | seo 100</code></pre>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Three columns -->
+		<section class="trio">
+			<div class="container">
+				<div class="trio-grid">
+					<div class="trio-col">
+						<h3>Zero JavaScript by default</h3>
+						<p>Astro ships pure HTML. Pages load instantly — no hydration overhead, no bundle bloat.</p>
+						<div class="trio-tags">
+							<span>Astro</span>
+							<span>Static HTML</span>
+						</div>
+					</div>
+					<div class="trio-col">
+						<h3>AI-powered analysis</h3>
+						<p>AI agents scan your content, themes, and plugins — then generate clean, optimized Astro code.</p>
+						<div class="trio-tags">
+							<span>Claude Code</span>
+							<span>Codex</span>
+						</div>
+					</div>
+					<div class="trio-col">
+						<h3>Deploy anywhere</h3>
+						<p>Push to Vercel, Netlify, Cloudflare Pages, or any static host. Redirects and sitemaps configured automatically.</p>
+						<div class="trio-tags">
+							<span>Vercel</span>
+							<span>Netlify</span>
+							<span>Cloudflare</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Two-column stats -->
+		<section class="stats" id="features">
+			<div class="container">
+				<div class="stats-grid">
+					<div class="stats-col">
+						<h3>Why builders are leaving WordPress</h3>
+						<p>Astro delivers what WordPress can't — speed, security, and simplicity. No PHP, no database, no plugin vulnerabilities.</p>
+						<div class="stats-numbers">
+							<div class="stat">
+								<span class="stat-val">0kb</span>
+								<span class="stat-label">JS by default</span>
+							</div>
+							<div class="stat">
+								<span class="stat-val">98+</span>
+								<span class="stat-label">Lighthouse score</span>
+							</div>
+							<div class="stat">
+								<span class="stat-val">100%</span>
+								<span class="stat-label">SEO preserved</span>
+							</div>
+							<div class="stat">
+								<span class="stat-val">$0</span>
+								<span class="stat-label">hosting possible</span>
+							</div>
+						</div>
+					</div>
+					<div class="stats-col">
+						<h3>Built for modern migration</h3>
+						<p>Six AI-powered capabilities make WordPress-to-Astro migration effortless. Content, themes, plugins — all handled automatically.</p>
+						<div class="stats-numbers">
+							<div class="stat">
+								<span class="stat-val">6</span>
+								<span class="stat-label">AI capabilities</span>
+							</div>
+							<div class="stat">
+								<span class="stat-val">1</span>
+								<span class="stat-label">command to run</span>
+							</div>
+							<div class="stat">
+								<span class="stat-val">4</span>
+								<span class="stat-label">step process</span>
+							</div>
+							<div class="stat">
+								<span class="stat-val">0</span>
+								<span class="stat-label">config required</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Bullet features -->
+		<section class="bullets">
+			<div class="container">
+				<div class="stats-grid">
+					<div class="stats-col">
+						<h3>Focus on content, not tooling</h3>
+						<ul>
+							<li>Bulletproof security — no PHP, no database attack surface</li>
+							<li>Modern developer experience with TypeScript and hot reload</li>
+							<li>Use any framework — React, Vue, Svelte, Solid in one project</li>
+						</ul>
+					</div>
+					<div class="stats-col">
+						<h3>SEO & performance preserved</h3>
+						<ul>
+							<li>All URLs, meta tags, structured data preserved automatically</li>
+							<li>Images and media optimized and converted to WebP and AVIF</li>
+							<li>Perfect Lighthouse scores out of the box — no plugins required</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Everything section (dark, with gradient cards) -->
+		<section class="everything" id="how-it-works">
+			<div class="container">
+				<h2 class="everything-title">From WordPress to Astro<br/>in 4 steps</h2>
+				<p class="everything-desc">Our AI agents handle the heavy lifting. You stay in control.</p>
+
+				<!-- Feature rows -->
+				<div class="feat-row">
+					<div class="feat-text">
+						<h3>Run the CLI</h3>
+						<p>Run <code>npx @wp2astro/convert</code> with your WordPress URL. Works locally, in Claude Code, or in Codex. Zero setup required.</p>
+						<ul>
+							<li>Point at any WordPress site URL</li>
+							<li>No API keys or authentication needed</li>
+							<li>Works with any WordPress version</li>
+						</ul>
+					</div>
+					<div class="feat-card grad-purple">
+						<div class="feat-card-inner">
+							<code>$ npx @wp2astro/convert --url https://myblog.com</code>
+						</div>
+					</div>
+				</div>
+
+				<div class="feat-row">
+					<div class="feat-text">
+						<h3>AI analysis</h3>
+						<p>AI agents scan your content structure, theme hierarchy, plugin dependencies, and custom fields.</p>
+						<ul>
+							<li>Content types, taxonomies, and custom fields mapped</li>
+							<li>Theme layouts and components detected</li>
+							<li>Plugin functionality matched to Astro alternatives</li>
+						</ul>
+					</div>
+					<div class="feat-card grad-blue">
+						<div class="feat-card-inner">
+							<code>[AGENT] 247 posts, 12 pages, 3 CPTs detected<br/>[AGENT] theme: twentytwentyfour → 4 layouts<br/>[AGENT] plugins: yoast → @astrojs/sitemap</code>
+						</div>
+					</div>
+				</div>
+
+				<div class="feat-row">
+					<div class="feat-text">
+						<h3>Code generation</h3>
+						<p>Clean Astro components, layouts, and pages are generated. Tailwind CSS, type-safe content collections included.</p>
+						<ul>
+							<li>Astro components from WordPress templates</li>
+							<li>Content collections with full type safety</li>
+							<li>Tailwind CSS styling generated automatically</li>
+						</ul>
+					</div>
+					<div class="feat-card grad-green">
+						<div class="feat-card-inner">
+							<code>src/layouts/Base.astro ✓<br/>src/components/Header.astro ✓<br/>src/content/posts/*.md ✓</code>
+						</div>
+					</div>
+				</div>
+
+				<div class="feat-row">
+					<div class="feat-text">
+						<h3>Deploy and go live</h3>
+						<p>Push to Vercel, Netlify, or Cloudflare Pages with one click. Redirects and sitemaps configured automatically.</p>
+						<ul>
+							<li>One-click deploy to any static host</li>
+							<li>Redirects from old WordPress URLs preserved</li>
+							<li>Sitemap and robots.txt generated</li>
+						</ul>
+					</div>
+					<div class="feat-card grad-teal">
+						<div class="feat-card-inner">
+							<code>✓ deployed to https://myblog.vercel.app<br/>✓ 247 redirects configured<br/>✓ sitemap.xml generated</code>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Open source -->
+		<section class="oss">
+			<div class="container">
+				<div class="oss-grid">
+					<div class="oss-text">
+						<h2>Free & open source</h2>
+						<p>wp2astro is free and open source, built by the community. Run it locally, in Claude Code, or in Codex. No accounts, no credit cards, no limits.</p>
+						<a href="https://github.com/wp2astro" class="oss-link">Contribute →</a>
+					</div>
+					<div class="oss-badge">
+						<span>Powered by</span>
+						<strong>AI Agents</strong>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<section class="cta">
+			<div class="cta-bg"></div>
+			<div class="container cta-inner">
+				<h2>Take your WordPress site<br/>to the next level with Astro</h2>
+				<a href="#get-started" class="btn-primary btn-lg">Get started</a>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer>
+			<div class="container footer-inner">
+				<span class="footer-brand">WP2Astro</span>
+				<a href="https://github.com/wp2astro" class="nav-icon" aria-label="GitHub">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+				</a>
+			</div>
+		</footer>
 	</body>
 </html>
+
+<style>
+	/* Reset */
+	*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+	html { scroll-behavior:smooth; }
+
+	body {
+		font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+		color: #1a1a2e;
+		background: #fff;
+		line-height: 1.6;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	.container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+	/* ---- NAV ---- */
+	nav {
+		position: fixed; top:0; left:0; right:0; z-index:100;
+		background: rgba(255,255,255,0.85);
+		backdrop-filter: blur(12px);
+		border-bottom: 1px solid #eee;
+	}
+	.nav-inner {
+		max-width:1120px; margin:0 auto; padding:0 24px;
+		height:56px; display:flex; align-items:center; justify-content:space-between;
+	}
+	.nav-left { display:flex; align-items:center; gap:32px; }
+	.nav-logo {
+		display:flex; align-items:center; gap:8px;
+		text-decoration:none; color:#1a1a2e; font-weight:800; font-size:16px;
+	}
+	.nav-links { display:flex; gap:24px; }
+	.nav-links a {
+		text-decoration:none; color:#666; font-size:14px; font-weight:500;
+		transition: color 0.15s;
+	}
+	.nav-links a:hover { color:#1a1a2e; }
+	.nav-right { display:flex; align-items:center; gap:16px; }
+	.nav-icon {
+		color:#666; transition:color 0.15s; display:flex; align-items:center;
+	}
+	.nav-icon:hover { color:#1a1a2e; }
+
+	/* ---- HERO ---- */
+	.hero {
+		padding: 140px 0 80px;
+		background: linear-gradient(180deg, #0c0a18 0%, #14102a 60%, #0c0a18 100%);
+		text-align:center; position:relative; overflow:hidden;
+	}
+	.hero::before {
+		content:''; position:absolute; top:40px; left:50%; transform:translateX(-50%);
+		width:900px; height:500px;
+		background: radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, transparent 70%);
+		pointer-events:none;
+	}
+	.hero-container { position:relative; }
+	.hero-icon { margin-bottom:24px; }
+	.hero h1 {
+		font-size: clamp(38px, 5.5vw, 68px);
+		font-weight: 900;
+		line-height: 1.05;
+		color: #fff;
+		letter-spacing: -0.03em;
+		margin-bottom: 24px;
+	}
+	.gradient-text {
+		background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 40%, #c084fc 100%);
+		-webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+	}
+	.hero-desc {
+		max-width:540px; margin:0 auto 36px; color:#9ca3af; font-size:16px; line-height:1.7;
+	}
+	.hero-actions {
+		display:flex; gap:12px; justify-content:center; margin-bottom:16px;
+	}
+	.hero-sub { color:#6b7280; font-size:13px; margin-bottom:56px; }
+
+	.btn-primary {
+		display:inline-flex; align-items:center; padding:11px 24px;
+		background:#7c3aed; color:#fff; border-radius:8px; text-decoration:none;
+		font-weight:600; font-size:14px; transition: background 0.15s, transform 0.1s;
+	}
+	.btn-primary:hover { background:#6d28d9; transform:translateY(-1px); }
+	.btn-lg { padding:14px 32px; font-size:15px; }
+	.btn-outline {
+		display:inline-flex; align-items:center; padding:11px 24px;
+		background:transparent; color:#d1d5db; border:1px solid rgba(255,255,255,0.15);
+		border-radius:8px; text-decoration:none; font-weight:600; font-size:14px;
+		transition: border-color 0.15s, color 0.15s;
+	}
+	.btn-outline:hover { border-color:rgba(255,255,255,0.35); color:#fff; }
+
+	/* ---- TERMINAL ---- */
+	.terminal {
+		max-width:780px; margin:0 auto; border-radius:12px; overflow:hidden;
+		background:#0d0d14; border:1px solid rgba(255,255,255,0.06);
+		text-align:left; box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+	}
+	.terminal-bar {
+		display:flex; gap:6px; padding:14px 16px;
+		background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.05);
+	}
+	.dot { width:10px; height:10px; border-radius:50%; }
+	.dot.r { background:#ef4444; }
+	.dot.y { background:#eab308; }
+	.dot.g { background:#22c55e; }
+	.terminal-body { padding:20px 24px; }
+	.terminal-body pre { margin:0; overflow-x:auto; }
+	.terminal-body code {
+		font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
+		font-size:13px; line-height:1.7; color:#9ca3af;
+	}
+	.t-g { color:#22c55e; }
+	.t-p { color:#a78bfa; }
+	.t-d { color:#4b5563; }
+	.t-green { color:#22c55e; }
+	.t-b { color:#60a5fa; }
+
+	/* ---- TRIO ---- */
+	.trio { padding:80px 0; border-bottom:1px solid #f0f0f0; }
+	.trio-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:48px; }
+	.trio-col h3 { font-size:15px; font-weight:700; margin-bottom:8px; color:#1a1a2e; }
+	.trio-col p { font-size:14px; color:#6b7280; line-height:1.6; margin-bottom:16px; }
+	.trio-tags { display:flex; gap:8px; flex-wrap:wrap; }
+	.trio-tags span {
+		font-size:12px; color:#9ca3af; border:1px solid #e5e7eb; border-radius:6px;
+		padding:3px 10px; font-weight:500;
+	}
+
+	/* ---- STATS ---- */
+	.stats { padding:80px 0; border-bottom:1px solid #f0f0f0; }
+	.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; }
+	.stats-col h3 { font-size:20px; font-weight:800; margin-bottom:12px; letter-spacing:-0.02em; }
+	.stats-col p { font-size:14px; color:#6b7280; line-height:1.6; margin-bottom:24px; }
+	.stats-numbers { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+	.stat {
+		display:flex; flex-direction:column; gap:2px;
+	}
+	.stat-val { font-size:28px; font-weight:800; color:#1a1a2e; letter-spacing:-0.03em; }
+	.stat-label { font-size:12px; color:#9ca3af; font-weight:500; }
+
+	/* ---- BULLETS ---- */
+	.bullets { padding:80px 0; border-bottom:1px solid #f0f0f0; }
+	.bullets ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+	.bullets li {
+		font-size:14px; color:#4b5563; padding-left:24px; position:relative; line-height:1.5;
+	}
+	.bullets li::before {
+		content:''; position:absolute; left:0; top:6px;
+		width:8px; height:8px; border-radius:50%; background:#7c3aed;
+	}
+
+	/* ---- EVERYTHING (dark section) ---- */
+	.everything {
+		padding:120px 0; background:#0c0a18; color:#fff;
+	}
+	.everything-title {
+		font-size:clamp(28px,4vw,44px); font-weight:900; text-align:center;
+		letter-spacing:-0.03em; line-height:1.1; margin-bottom:16px;
+	}
+	.everything-desc {
+		text-align:center; color:#9ca3af; font-size:16px; margin-bottom:80px;
+	}
+
+	/* Feature rows */
+	.feat-row {
+		display:grid; grid-template-columns:1fr 1fr; gap:48px;
+		align-items:start; margin-bottom:64px;
+	}
+	.feat-row:last-child { margin-bottom:0; }
+	.feat-text h3 {
+		font-size:18px; font-weight:800; margin-bottom:12px; letter-spacing:-0.01em;
+	}
+	.feat-text p {
+		font-size:14px; color:#9ca3af; line-height:1.7; margin-bottom:20px;
+	}
+	.feat-text code {
+		background:rgba(124,58,237,0.15); color:#c4b5fd; padding:2px 8px;
+		border-radius:4px; font-size:13px;
+		font-family:'SF Mono','Fira Code',monospace;
+	}
+	.feat-text ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+	.feat-text li {
+		font-size:13px; color:#9ca3af; padding-left:20px; position:relative;
+	}
+	.feat-text li::before {
+		content:'✓'; position:absolute; left:0; color:#7c3aed; font-weight:700;
+	}
+
+	/* Gradient cards */
+	.feat-card {
+		border-radius:16px; padding:2px; position:relative; overflow:hidden;
+		aspect-ratio:16/10;
+	}
+	.feat-card-inner {
+		background:#13111f; border-radius:14px; height:100%;
+		display:flex; align-items:flex-end; padding:24px;
+		position:relative; z-index:1;
+	}
+	.feat-card-inner code {
+		font-family:'SF Mono','Fira Code',monospace; font-size:12px;
+		color:rgba(255,255,255,0.6); line-height:1.8;
+	}
+	.grad-purple {
+		background: linear-gradient(135deg, #7c3aed, #4f46e5, #1e1b4b);
+	}
+	.grad-purple .feat-card-inner {
+		background: linear-gradient(180deg, rgba(19,17,31,0.3) 0%, rgba(19,17,31,0.95) 100%);
+	}
+	.grad-blue {
+		background: linear-gradient(135deg, #3b82f6, #6366f1, #1e1b4b);
+	}
+	.grad-blue .feat-card-inner {
+		background: linear-gradient(180deg, rgba(19,17,31,0.3) 0%, rgba(19,17,31,0.95) 100%);
+	}
+	.grad-green {
+		background: linear-gradient(135deg, #22c55e, #06b6d4, #1e1b4b);
+	}
+	.grad-green .feat-card-inner {
+		background: linear-gradient(180deg, rgba(19,17,31,0.3) 0%, rgba(19,17,31,0.95) 100%);
+	}
+	.grad-teal {
+		background: linear-gradient(135deg, #14b8a6, #6366f1, #1e1b4b);
+	}
+	.grad-teal .feat-card-inner {
+		background: linear-gradient(180deg, rgba(19,17,31,0.3) 0%, rgba(19,17,31,0.95) 100%);
+	}
+
+	/* ---- OSS ---- */
+	.oss { padding:100px 0; border-bottom:1px solid #f0f0f0; }
+	.oss-grid {
+		display:grid; grid-template-columns:1fr auto; gap:64px; align-items:center;
+	}
+	.oss-text h2 {
+		font-size:clamp(28px,3.5vw,40px); font-weight:900; letter-spacing:-0.03em;
+		margin-bottom:16px;
+	}
+	.oss-text p {
+		font-size:15px; color:#6b7280; line-height:1.7; margin-bottom:20px; max-width:480px;
+	}
+	.oss-link {
+		font-size:14px; font-weight:600; color:#7c3aed; text-decoration:none;
+		transition:color 0.15s;
+	}
+	.oss-link:hover { color:#6d28d9; }
+	.oss-badge {
+		display:flex; flex-direction:column; align-items:flex-end; gap:4px;
+		padding:24px 32px; border:1px solid #e5e7eb; border-radius:12px;
+	}
+	.oss-badge span { font-size:12px; color:#9ca3af; font-weight:500; }
+	.oss-badge strong { font-size:20px; font-weight:800; color:#1a1a2e; }
+
+	/* ---- CTA ---- */
+	.cta {
+		position:relative; padding:120px 0; background:#0c0a18;
+		text-align:center; overflow:hidden;
+	}
+	.cta-bg {
+		position:absolute; inset:0;
+		background:
+			radial-gradient(ellipse at 30% 50%, rgba(124,58,237,0.2) 0%, transparent 50%),
+			radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.15) 0%, transparent 50%),
+			linear-gradient(180deg, transparent 0%, rgba(124,58,237,0.08) 100%);
+	}
+	.cta-inner { position:relative; }
+	.cta-inner h2 {
+		font-size:clamp(28px,4vw,44px); font-weight:900; color:#fff;
+		letter-spacing:-0.03em; line-height:1.15; margin-bottom:32px;
+	}
+
+	/* ---- FOOTER ---- */
+	footer {
+		border-top:1px solid #f0f0f0; padding:20px 0;
+	}
+	.footer-inner {
+		display:flex; justify-content:space-between; align-items:center;
+	}
+	.footer-brand {
+		font-size:13px; font-weight:600; color:#9ca3af;
+	}
+
+	/* ---- RESPONSIVE ---- */
+	@media (max-width:768px) {
+		.trio-grid { grid-template-columns:1fr; gap:32px; }
+		.stats-grid { grid-template-columns:1fr; gap:48px; }
+		.feat-row { grid-template-columns:1fr; gap:32px; }
+		.oss-grid { grid-template-columns:1fr; gap:32px; }
+		.oss-badge { align-items:flex-start; }
+		.hero-actions { flex-direction:column; align-items:center; }
+		.nav-links { display:none; }
+	}
+</style>
