@@ -34,7 +34,11 @@ async function main() {
       console.error(`  Run ${bold("wp2astro --help")} for usage`);
       process.exit(1);
     }
-    await convert({ url: args.url, output: args.output });
+    await convert({
+      url: args.url,
+      output: args.output,
+      downloadImages: args.downloadImages,
+    });
     return;
   }
 

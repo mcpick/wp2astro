@@ -7,6 +7,14 @@
   },
   "scripts": {
     "dev": "bun run src/cli.ts",
-    "build": "bun build ./src/cli.ts --compile --outfile dist/wp2astro"
+    "build": "bun build ./src/cli.ts --compile --outfile dist/wp2astro",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "node-html-parser": "^7.1.0",
+    "turndown": "^7.2.2"
+  },
+  "devDependencies": {
+    "@types/turndown": "^5.0.6"
   }
 }

@@ -6,6 +6,7 @@ export interface CliArgs {
   output: string;
   help: boolean;
   version: boolean;
+  downloadImages: boolean;
 }
 
 export function parse(args: string[]): CliArgs {
@@ -17,6 +18,7 @@ export function parse(args: string[]): CliArgs {
       output: { type: "string", short: "o", default: "./output" },
       help: { type: "boolean", short: "h", default: false },
       version: { type: "boolean", short: "v", default: false },
+      "no-images": { type: "boolean", default: false },
     },
   });
 
@@ -26,5 +28,6 @@ export function parse(args: string[]): CliArgs {
     output: values.output as string,
     help: values.help as boolean,
     version: values.version as boolean,
+    downloadImages: !(values["no-images"] as boolean),
   };
 }
