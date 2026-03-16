@@ -13,6 +13,9 @@ yarn-error.log*
 pnpm-debug.log*
 
 
+# wrangler
+.wrangler/
+
 # environment variables
 .env
 .env.production

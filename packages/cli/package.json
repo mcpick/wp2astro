@@ -1,0 +1,12 @@
+{
+  "name": "@wp2astro/convert",
+  "version": "0.0.1",
+  "type": "module",
+  "bin": {
+    "wp2astro": "./src/cli.ts"
+  },
+  "scripts": {
+    "dev": "bun run src/cli.ts",
+    "build": "bun build ./src/cli.ts --compile --outfile dist/wp2astro"
+  }
+}
