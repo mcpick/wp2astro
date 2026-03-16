@@ -17,17 +17,17 @@ git clone https://github.com/wp2astro/wp2astro.git
 cd wp2astro && pnpm install
 
 # Convert a WordPress site
-bun packages/cli/src/cli.ts convert --url https://myblog.com
+bunx @wp2astro/convert convert --url https://myblog.com
 
 # Convert + extract design data for AI styling
-bun packages/cli/src/cli.ts convert --url https://myblog.com --scaffold
+bunx @wp2astro/convert convert --url https://myblog.com --scaffold
 ```
 
 ## AI agent workflow
 
 WP2Astro is designed to work with AI coding agents like Claude Code:
 
-1. **Convert** — run `wp2astro convert --url <site> --scaffold` to produce an Astro project with content + a design prompt
+1. **Convert** — run `bunx @wp2astro/convert convert --url <site> --scaffold` to produce an Astro project with content + a design prompt
 2. **Style** — paste the scaffold prompt into Claude Code and run `/elite-style` to generate styled components matching the original site
 3. **Deploy** — `pnpm build` and push to any static host
 
