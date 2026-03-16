@@ -1,8 +1,30 @@
 {
   "name": "@wp2astro/convert",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "description": "Convert WordPress sites to Astro projects via the WP REST API",
   "type": "module",
+  "license": "MIT",
   "author": "Jack McNicol <jack@mcpickle.com.au>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jackmcpickle/wp2astro",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/jackmcpickle/wp2astro/tree/main/packages/cli#readme",
+  "bugs": "https://github.com/jackmcpickle/wp2astro/issues",
+  "keywords": [
+    "wordpress",
+    "astro",
+    "migration",
+    "converter",
+    "cli",
+    "wp2astro"
+  ],
+  "files": [
+    "src",
+    "dist",
+    "README.md"
+  ],
   "bin": {
     "wp2astro": "./src/cli.ts"
   },
