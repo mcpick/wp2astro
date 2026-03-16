@@ -83,3 +83,26 @@ export interface ConvertError {
   message: string;
   item?: string;
 }
+
+export interface ScrapedDesign {
+  colors: { name: string; value: string }[];
+  fonts: { family: string; url?: string; fontsource?: string }[];
+  navItems: NavItem[];
+  layoutType: "full-width" | "sidebar-left" | "sidebar-right";
+  sidebarDetected: boolean;
+  pages: PageSummary[];
+}
+
+export interface NavItem {
+  label: string;
+  href: string;
+  children: NavItem[];
+}
+
+export interface PageSummary {
+  type: "landing" | "blog-listing" | "single-post" | "single-page" | "archive";
+  url: string;
+  title: string;
+  hasHero: boolean;
+  hasSidebar: boolean;
+}

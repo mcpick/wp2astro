@@ -57,6 +57,16 @@ describe("parse", () => {
     expect(result.version).toBe(true);
   });
 
+  test("--scaffold flag", () => {
+    const result = parse(["convert", "--scaffold"]);
+    expect(result.scaffold).toBe(true);
+  });
+
+  test("scaffold disabled by default", () => {
+    const result = parse(["convert"]);
+    expect(result.scaffold).toBe(false);
+  });
+
   test("missing command", () => {
     const result = parse([]);
     expect(result.command).toBe("");

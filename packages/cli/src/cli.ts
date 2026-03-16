@@ -38,6 +38,7 @@ async function main() {
       url: args.url,
       output: args.output,
       downloadImages: args.downloadImages,
+      scaffold: args.scaffold,
     });
     return;
   }

@@ -18,9 +18,10 @@ interface ConvertOptions {
   url: string;
   output: string;
   downloadImages: boolean;
+  scaffold: boolean;
 }
 
-export async function convert({ url, output, downloadImages: dlImages }: ConvertOptions) {
+export async function convert({ url, output, downloadImages: dlImages, scaffold }: ConvertOptions) {
   const outputDir = resolve(output);
   const errors: ConvertError[] = [];
 
@@ -234,4 +235,21 @@ export async function convert({ url, output, downloadImages: dlImages }: Convert
     `  ${dim("Next:")} ${cyan(`cd ${output}`)} && ${cyan("pnpm install")} && ${cyan("pnpm dev")}`,
   );
   console.log();
+
+  // Scaffold: scrape design + print prompt
+  if (scaffold) {
+    const { scrapeDesign } = await import("../scrape/index.js");
+    const { generateScaffoldPrompt } = await import("../scrape/prompt.js");
+
+    const design = await withSpinner("Analyzing site design…", async () => {
+      return scrapeDesign(url, posts, pages);
+    });
+
+    const prompt = generateScaffoldPrompt(design, site.name, outputDir, cptTypes);
+    console.log(dim("─".repeat(40)));
+    console.log(bold("  Scaffold prompt (paste into Claude with /elite-style):"));
+    console.log(dim("─".repeat(40)));
+    console.log();
+    console.log(prompt);
+  }
 }

@@ -7,6 +7,7 @@ export interface CliArgs {
   help: boolean;
   version: boolean;
   downloadImages: boolean;
+  scaffold: boolean;
 }
 
 export function parse(args: string[]): CliArgs {
@@ -19,6 +20,7 @@ export function parse(args: string[]): CliArgs {
       help: { type: "boolean", short: "h", default: false },
       version: { type: "boolean", short: "v", default: false },
       "no-images": { type: "boolean", default: false },
+      scaffold: { type: "boolean", default: false },
     },
   });
 
@@ -29,5 +31,6 @@ export function parse(args: string[]): CliArgs {
     help: values.help as boolean,
     version: values.version as boolean,
     downloadImages: !(values["no-images"] as boolean),
+    scaffold: values.scaffold as boolean,
   };
 }
