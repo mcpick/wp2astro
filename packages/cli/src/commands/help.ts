@@ -5,7 +5,7 @@ export function printHelp() {
 ${bold("wp2astro")} — Convert WordPress sites to Astro
 
 ${cyan("USAGE")}
-  bunx @wp2astro/convert convert --url <wordpress-url> [options]
+  npx -y @wp2astro/convert convert --url <wordpress-url> [options]
 
 ${cyan("COMMANDS")}
   convert    Convert a WordPress site to an Astro project
@@ -19,9 +19,9 @@ ${cyan("OPTIONS")}
   -v, --version         Show version number
 
 ${cyan("EXAMPLES")}
-  bunx @wp2astro/convert convert --url https://myblog.com
-  bunx @wp2astro/convert convert --url https://myblog.com --output ./my-astro-site
-  bunx @wp2astro/convert convert --url https://myblog.com --no-images
-  bunx @wp2astro/convert convert --url https://myblog.com --scaffold
+  npx -y @wp2astro/convert convert --url https://myblog.com
+  npx -y @wp2astro/convert convert --url https://myblog.com --output ./my-astro-site
+  npx -y @wp2astro/convert convert --url https://myblog.com --no-images
+  npx -y @wp2astro/convert convert --url https://myblog.com --scaffold
 `);
 }

@@ -5,13 +5,13 @@ CLI that converts a WordPress site into an Astro 6 project. Fetches content via 
 ## Install
 
 ```sh
-bunx @wp2astro/convert convert --url https://myblog.com
+npx -y @wp2astro/convert convert --url https://myblog.com
 ```
 
 ## Usage
 
 ```
-bunx @wp2astro/convert convert --url <wordpress-url> [options]
+npx -y @wp2astro/convert convert --url <wordpress-url> [options]
 ```
 
 ### Options
@@ -29,16 +29,16 @@ bunx @wp2astro/convert convert --url <wordpress-url> [options]
 
 ```sh
 # Basic conversion
-bunx @wp2astro/convert convert --url https://myblog.com
+npx -y @wp2astro/convert convert --url https://myblog.com
 
 # Custom output directory
-bunx @wp2astro/convert convert --url https://myblog.com --output ./my-astro-site
+npx -y @wp2astro/convert convert --url https://myblog.com --output ./my-astro-site
 
 # Skip images
-bunx @wp2astro/convert convert --url https://myblog.com --no-images
+npx -y @wp2astro/convert convert --url https://myblog.com --no-images
 
 # Convert + generate styling prompt
-bunx @wp2astro/convert convert --url https://myblog.com --scaffold
+npx -y @wp2astro/convert convert --url https://myblog.com --scaffold
 ```
 
 ## What it does
@@ -71,7 +71,7 @@ Ask Claude Code to run the CLI:
 
 ```
 Convert my WordPress site at https://myblog.com to Astro.
-Run: bunx @wp2astro/convert convert --url https://myblog.com --scaffold --output ./my-site
+Run: npx -y @wp2astro/convert convert --url https://myblog.com --scaffold --output ./my-site
 ```
 
 This produces:
