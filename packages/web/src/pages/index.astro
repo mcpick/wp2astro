@@ -62,7 +62,7 @@ import '../styles/global.css';
 					<a href="#get-started" class="inline-flex items-center px-6 py-2.5 bg-primary text-white rounded-lg no-underline font-semibold text-sm hover:bg-primary-hover hover:-translate-y-px transition-all">Get started</a>
 					<a href="#how-it-works" class="inline-flex items-center px-6 py-2.5 bg-transparent text-gray-300 border border-white/15 rounded-lg no-underline font-semibold text-sm hover:border-white/35 hover:text-white transition-all">Read the Documentation</a>
 				</div>
-				<p class="text-gray-500 text-[13px] mb-14">Run in Claude Code, Codex, or locally. Zero config.</p>
+				<p class="text-gray-500 text-[13px] mb-14">Run locally or ask Claude Code to convert your site. Zero config.</p>
 			</div>
 			<!-- Terminal -->
 			<div class="max-w-[1120px] mx-auto px-6">
@@ -73,16 +73,17 @@ import '../styles/global.css';
 						<span class="size-2.5 rounded-full bg-green-500"></span>
 					</div>
 					<div class="p-5 px-6">
-						<pre class="m-0 overflow-x-auto"><code class="font-mono text-[13px] leading-relaxed text-gray-400"><span class="text-green-500">$</span> <span class="text-violet-400">npx @wp2astro/convert</span> --url https://myblog.com
+						<pre class="m-0 overflow-x-auto"><code class="font-mono text-[13px] leading-relaxed text-gray-400"><span class="text-green-500">$</span> <span class="text-violet-400">wp2astro convert</span> --url https://myblog.com --scaffold
 
-<span class="text-gray-600">[AGENT]</span> scanning 247 posts, 12 pages, 3 custom post types...
-<span class="text-gray-600">[AGENT]</span> analyzing theme: twentytwentyfour → 4 layouts, 12 components detected
-<span class="text-gray-600">[AGENT]</span> converting plugins: yoast seo → @astrojs/sitemap, contact-form-7 → native form
-<span class="text-gray-600">[AGENT]</span> generating astro components... src/layouts/Base.astro ✓
-<span class="text-gray-600">[AGENT]</span> generating content collections... 247 posts converted ✓
+<span class="text-gray-600">⠙</span> Probing WordPress REST API… <span class="text-green-500">✓</span>
+<span class="text-gray-600">⠙</span> Fetching 247 posts… <span class="text-green-500">✓</span>
+<span class="text-gray-600">⠙</span> Fetching 12 pages… <span class="text-green-500">✓</span>
+<span class="text-gray-600">⠙</span> Discovering custom post types… <span class="text-green-500">✓</span> 3 found
+<span class="text-gray-600">⠙</span> Transforming content… <span class="text-green-500">✓</span>
+<span class="text-gray-600">⠙</span> Analyzing site design… <span class="text-green-500">✓</span>
 
-<span class="text-green-500">✓</span> conversion complete → /output/my-astro-site
-<span class="text-blue-400">ℹ</span> lighthouse: performance 98 | accessibility 100 | seo 100</code></pre>
+<span class="text-green-500">✓</span> Conversion complete!
+<span class="text-blue-400">ℹ</span> Scaffold prompt printed — paste into Claude Code with /elite-style</code></pre>
 					</div>
 				</div>
 			</div>
@@ -207,50 +208,50 @@ import '../styles/global.css';
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
 					<div>
 						<h3 class="text-lg font-extrabold mb-3 tracking-tight">Run the CLI</h3>
-						<p class="text-sm text-gray-400 leading-relaxed mb-5">Run <code class="bg-primary/15 text-violet-300 px-2 py-0.5 rounded font-mono text-[13px]">npx @wp2astro/convert</code> with your WordPress URL. Works locally, in Claude Code, or in Codex. Zero setup required.</p>
+						<p class="text-sm text-gray-400 leading-relaxed mb-5">Run <code class="bg-primary/15 text-violet-300 px-2 py-0.5 rounded font-mono text-[13px]">wp2astro convert</code> with your WordPress URL. Works locally, in Claude Code, or in Codex. Zero setup required.</p>
 						<ul class="list-none flex flex-col gap-2.5">
 							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Point at any WordPress site URL</li>
 							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">No API keys or authentication needed</li>
-							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Works with any WordPress version</li>
+							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Add <code class="bg-primary/15 text-violet-300 px-1.5 py-0.5 rounded font-mono text-[11px]">--scaffold</code> to extract design data for AI styling</li>
 						</ul>
 					</div>
 					<div class="grad-purple rounded-2xl p-0.5 aspect-[16/10] overflow-hidden">
 						<div class="grad-card-inner bg-dark-card rounded-[14px] h-full flex items-end p-6 relative z-[1]">
-							<code class="font-mono text-xs text-white/60 leading-relaxed">$ npx @wp2astro/convert --url https://myblog.com</code>
+							<code class="font-mono text-xs text-white/60 leading-relaxed">$ wp2astro convert --url https://myblog.com --scaffold</code>
 						</div>
 					</div>
 				</div>
 
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
 					<div>
-						<h3 class="text-lg font-extrabold mb-3 tracking-tight">AI analysis</h3>
-						<p class="text-sm text-gray-400 leading-relaxed mb-5">AI agents scan your content structure, theme hierarchy, plugin dependencies, and custom fields.</p>
+						<h3 class="text-lg font-extrabold mb-3 tracking-tight">Design analysis</h3>
+						<p class="text-sm text-gray-400 leading-relaxed mb-5">The CLI scrapes your live site to extract colors, fonts, navigation, layout patterns, and page types — then generates a styling prompt.</p>
 						<ul class="list-none flex flex-col gap-2.5">
-							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Content types, taxonomies, and custom fields mapped</li>
-							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Theme layouts and components detected</li>
-							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Plugin functionality matched to Astro alternatives</li>
+							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Color palette extracted from CSS vars and stylesheets</li>
+							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Fonts detected with Fontsource install commands</li>
+							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Nav structure, sidebar, and hero sections mapped</li>
 						</ul>
 					</div>
 					<div class="grad-blue rounded-2xl p-0.5 aspect-[16/10] overflow-hidden">
 						<div class="grad-card-inner bg-dark-card rounded-[14px] h-full flex items-end p-6 relative z-[1]">
-							<code class="font-mono text-xs text-white/60 leading-relaxed">[AGENT] 247 posts, 12 pages, 3 CPTs detected<br/>[AGENT] theme: twentytwentyfour → 4 layouts<br/>[AGENT] plugins: yoast → @astrojs/sitemap</code>
+							<code class="font-mono text-xs text-white/60 leading-relaxed">## Color Palette<br/>| primary | #7c3aed |<br/>## Typography<br/>- Inter → pnpm add @fontsource/inter</code>
 						</div>
 					</div>
 				</div>
 
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
 					<div>
-						<h3 class="text-lg font-extrabold mb-3 tracking-tight">Code generation</h3>
-						<p class="text-sm text-gray-400 leading-relaxed mb-5">Clean Astro components, layouts, and pages are generated. Tailwind CSS, type-safe content collections included.</p>
+						<h3 class="text-lg font-extrabold mb-3 tracking-tight">Style with AI</h3>
+						<p class="text-sm text-gray-400 leading-relaxed mb-5">Paste the scaffold prompt into Claude Code and run <code class="bg-primary/15 text-violet-300 px-1.5 py-0.5 rounded font-mono text-[11px]">/elite-style</code> — it generates styled Astro components matching your original design.</p>
 						<ul class="list-none flex flex-col gap-2.5">
-							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Astro components from WordPress templates</li>
+							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Header, Footer, BaseLayout generated from design data</li>
+							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Tailwind @theme tokens from your color palette</li>
 							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Content collections with full type safety</li>
-							<li class="text-[13px] text-gray-400 pl-5 relative before:content-['✓'] before:absolute before:left-0 before:text-primary before:font-bold">Tailwind CSS styling generated automatically</li>
 						</ul>
 					</div>
 					<div class="grad-green rounded-2xl p-0.5 aspect-[16/10] overflow-hidden">
 						<div class="grad-card-inner bg-dark-card rounded-[14px] h-full flex items-end p-6 relative z-[1]">
-							<code class="font-mono text-xs text-white/60 leading-relaxed">src/layouts/Base.astro ✓<br/>src/components/Header.astro ✓<br/>src/content/posts/*.md ✓</code>
+							<code class="font-mono text-xs text-white/60 leading-relaxed">src/layouts/BaseLayout.astro ✓<br/>src/components/Header.astro ✓<br/>src/styles/global.css ✓</code>
 						</div>
 					</div>
 				</div>

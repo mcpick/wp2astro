@@ -2,6 +2,7 @@
   "name": "@wp2astro/convert",
   "version": "0.0.1",
   "type": "module",
+  "author": "Jack McNicol <jack@mcpickle.com.au>",
   "bin": {
     "wp2astro": "./src/cli.ts"
   },
