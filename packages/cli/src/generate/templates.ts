@@ -39,7 +39,39 @@ export const tsConfig = `{
 }
 `;
 
-export const contentConfig = `import { defineCollection, z } from "astro:content";
+function toIdentifier(name: string): string {
+  return name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+}
+
+export const contentConfig = (cptNames: string[] = []) => {
+  const cptCollections = cptNames.map(name => {
+    const id = toIdentifier(name);
+    return `
+const ${id} = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/${name}" }),
+  schema: z.object({
+    title: z.string(),
+    date: z.string(),
+    slug: z.string(),
+    lastModified: z.string().optional(),
+    description: z.string().optional(),
+    heroImage: z.string().optional(),
+    heroImageAlt: z.string().optional(),
+    categories: z.array(z.string()).optional(),
+    tags: z.array(z.string()).optional(),
+  }),
+});`;
+  }).join("\n");
+
+  const allEntries = [
+    ...["posts", "pages"].map(n => n),
+    ...cptNames.map(name => {
+      const id = toIdentifier(name);
+      return id === name ? name : `"${name}": ${id}`;
+    }),
+  ];
+
+  return `import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 const posts = defineCollection({
@@ -67,9 +99,10 @@ const pages = defineCollection({
     description: z.string().optional(),
   }),
 });
-
-export const collections = { posts, pages };
+${cptCollections}
+export const collections = { ${allEntries.join(", ")} };
 `;
+};
 
 export const baseLayout = `---
 import "../styles/global.css";
@@ -233,4 +266,33 @@ const { Content } = await render(page);
   <h1>{page.data.title}</h1>
   <Content />
 </BaseLayout>
+`;
+
+export const cptSlugPage = (collectionName: string) => `---
+import PostLayout from "../../layouts/PostLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const items = await getCollection("${collectionName}");
+  return items.map((item) => ({
+    params: { slug: item.data.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+
+<PostLayout
+  title={item.data.title}
+  date={item.data.date}
+  description={item.data.description}
+  heroImage={item.data.heroImage}
+  heroImageAlt={item.data.heroImageAlt}
+  categories={item.data.categories}
+  tags={item.data.tags}
+>
+  <Content />
+</PostLayout>
 `;

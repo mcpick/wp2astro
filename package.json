@@ -1,6 +1,13 @@
 {
   "name": "wp2astro",
   "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
+    ]
+  },
   "scripts": {
     "dev:web": "pnpm --filter @wp2astro/web dev",
     "build:web": "pnpm --filter @wp2astro/web build",

@@ -14,7 +14,7 @@ export interface WPPost {
   date: string;
   modified: string;
   status: string;
-  type: "post" | "page";
+  type: string;
   link: string;
   featuredImage?: WPMedia;
   categories: WPTaxonomy[];
@@ -47,9 +47,16 @@ export interface WPComment {
 
 export interface AstroContent {
   slug: string;
-  type: "post" | "page";
+  type: string;
   frontmatter: Record<string, unknown>;
   markdown: string;
+}
+
+export interface WPPostType {
+  name: string;
+  slug: string;
+  restBase: string;
+  label: string;
 }
 
 export interface ImageRef {

@@ -47,6 +47,24 @@ describe("buildUrlMap", () => {
     expect(map.get("https://example.com")).toBe("/");
     expect(map.get("https://example.com/")).toBe("/");
   });
+
+  test("maps CPT entries to /restBase/slug", () => {
+    const cptPosts = [makePost({ slug: "big-project", link: "https://example.com/project/big-project/", type: "project" })];
+    const map = buildUrlMap("https://example.com", [], [], [{ restBase: "project", posts: cptPosts }]);
+    expect(map.get("https://example.com/project/big-project/")).toBe("/project/big-project");
+    expect(map.get("https://example.com/project/big-project")).toBe("/project/big-project");
+  });
+
+  test("maps multiple CPTs", () => {
+    const projects = [makePost({ slug: "p1", link: "https://example.com/project/p1/", type: "project" })];
+    const events = [makePost({ slug: "e1", link: "https://example.com/events/e1/", type: "event" })];
+    const map = buildUrlMap("https://example.com", [], [], [
+      { restBase: "project", posts: projects },
+      { restBase: "events", posts: events },
+    ]);
+    expect(map.get("https://example.com/project/p1/")).toBe("/project/p1");
+    expect(map.get("https://example.com/events/e1/")).toBe("/events/e1");
+  });
 });
 
 describe("rewriteLinks", () => {

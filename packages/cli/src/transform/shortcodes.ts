@@ -1,4 +1,15 @@
 /**
+ * Extract attachment IDs from gallery shortcodes.
+ */
+export function extractGalleryIds(html: string): number[] {
+  const ids: number[] = [];
+  for (const match of html.matchAll(/\[gallery[^\]]*ids=["']([^"']+)["'][^\]]*\]/gi)) {
+    ids.push(...match[1].split(",").map(id => parseInt(id.trim(), 10)).filter(n => !isNaN(n)));
+  }
+  return ids;
+}
+
+/**
  * Strip or convert WordPress shortcodes to plain HTML/markdown equivalents.
  */
 export function processShortcodes(html: string): string {
@@ -10,7 +21,9 @@ export function processShortcodes(html: string): string {
     (_, inner) => `<figure>${inner.trim()}</figure>`,
   );
 
-  // [gallery] → remove (no meaningful conversion)
+  // [gallery ids="..."] → marker comment for later resolution
+  result = result.replace(/\[gallery[^\]]*ids=["']([^"']+)["'][^\]]*\]/gi, '<!-- wp-gallery:$1 -->');
+  // [gallery] without ids → strip
   result = result.replace(/\[gallery[^\]]*\]/gi, "");
 
   // [embed] → unwrap to just the URL

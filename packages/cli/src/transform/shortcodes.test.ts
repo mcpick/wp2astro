@@ -1,5 +1,32 @@
 import { describe, test, expect } from "bun:test";
-import { processShortcodes } from "./shortcodes.js";
+import { processShortcodes, extractGalleryIds } from "./shortcodes.js";
+
+describe("extractGalleryIds", () => {
+  test("parses ids from gallery shortcode", () => {
+    expect(extractGalleryIds('[gallery ids="1,2,3"]')).toEqual([1, 2, 3]);
+  });
+
+  test("handles single quotes", () => {
+    expect(extractGalleryIds("[gallery ids='10,20']")).toEqual([10, 20]);
+  });
+
+  test("returns empty for gallery without ids", () => {
+    expect(extractGalleryIds("[gallery columns=3]")).toEqual([]);
+  });
+
+  test("returns empty for no galleries", () => {
+    expect(extractGalleryIds("<p>No galleries here</p>")).toEqual([]);
+  });
+
+  test("handles multiple galleries", () => {
+    const html = '[gallery ids="1,2"] text [gallery ids="3,4"]';
+    expect(extractGalleryIds(html)).toEqual([1, 2, 3, 4]);
+  });
+
+  test("handles extra attributes", () => {
+    expect(extractGalleryIds('[gallery columns="3" ids="5,6" size="medium"]')).toEqual([5, 6]);
+  });
+});
 
 describe("processShortcodes", () => {
   test("caption → figure", () => {
@@ -7,8 +34,13 @@ describe("processShortcodes", () => {
     expect(processShortcodes(input)).toBe("<figure><img src=\"a.jpg\" /> My caption</figure>");
   });
 
-  test("gallery stripped", () => {
+  test("gallery with ids replaced with marker", () => {
     const input = 'before [gallery ids="1,2,3"] after';
+    expect(processShortcodes(input)).toBe("before <!-- wp-gallery:1,2,3 --> after");
+  });
+
+  test("gallery without ids stripped", () => {
+    const input = "before [gallery columns=3] after";
     expect(processShortcodes(input)).toBe("before  after");
   });
 

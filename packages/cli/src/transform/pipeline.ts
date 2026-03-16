@@ -1,4 +1,4 @@
-import type { AstroContent, ConvertError, ImageRef, WPPost } from "../types.js";
+import type { AstroContent, ConvertError, ImageRef, WPMedia, WPPost } from "../types.js";
 import { processShortcodes } from "./shortcodes.js";
 import { htmlToMarkdown } from "./html-to-markdown.js";
 import { serializeFrontmatter } from "./frontmatter.js";
@@ -17,6 +17,7 @@ export function transformPosts(
   posts: WPPost[],
   urlMap: Map<string, string>,
   errors: ConvertError[],
+  mediaMap?: Map<number, WPMedia>,
 ): TransformResult {
   const content: AstroContent[] = [];
   const allImageUrls: string[] = [];
@@ -26,12 +27,29 @@ export function transformPosts(
       // 1. Process shortcodes
       let html = processShortcodes(post.content);
 
+      // 1b. Resolve gallery markers to <figure><img> tags
+      if (mediaMap) {
+        html = html.replace(/<!-- wp-gallery:([\d,]+) -->/g, (_, idsStr) => {
+          const ids = idsStr.split(",").map(Number);
+          return ids
+            .map((id: number) => mediaMap.get(id))
+            .filter(Boolean)
+            .map((m: WPMedia) => `<figure><img src="${m.url}" alt="${m.alt}"></figure>`)
+            .join("\n");
+        });
+      }
+
       // 2. HTML → Markdown
       let markdown = htmlToMarkdown(html);
 
       // 3. Extract image URLs before rewriting
       const imageUrls = extractImageUrls(markdown);
       allImageUrls.push(...imageUrls);
+
+      // 3b. Include featured image URL in download queue
+      if (post.featuredImage?.url?.startsWith("http")) {
+        allImageUrls.push(post.featuredImage.url);
+      }
 
       // 4. Rewrite internal links
       markdown = rewriteLinks(markdown, urlMap);

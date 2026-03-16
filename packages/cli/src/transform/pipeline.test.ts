@@ -1,6 +1,6 @@
 import { describe, test, expect } from "bun:test";
 import { transformPosts } from "./pipeline.js";
-import type { WPPost, ConvertError } from "../types.js";
+import type { WPPost, WPMedia, ConvertError } from "../types.js";
 
 function makePost(overrides: Partial<WPPost> = {}): WPPost {
   return {
@@ -116,5 +116,34 @@ describe("transformPosts", () => {
     const post2 = makePost({ slug: "p2", content: '<p><img src="https://example.com/photo.jpg"></p>' });
     const { imageUrls } = transformPosts([post1, post2], new Map(), []);
     expect(imageUrls).toHaveLength(1);
+  });
+
+  test("featured image URL included in imageUrls", () => {
+    const post = makePost({
+      content: "<p>No images in content</p>",
+      featuredImage: { id: 1, url: "https://example.com/hero.jpg", alt: "Hero", width: 800, height: 600, mimeType: "image/jpeg" },
+    });
+    const { imageUrls } = transformPosts([post], new Map(), []);
+    expect(imageUrls).toContain("https://example.com/hero.jpg");
+  });
+
+  test("gallery markers resolved to img tags with mediaMap", () => {
+    const post = makePost({ content: '<p>before</p><!-- wp-gallery:10,20 --><p>after</p>' });
+    const mediaMap = new Map<number, WPMedia>([
+      [10, { id: 10, url: "https://example.com/a.jpg", alt: "A", width: 800, height: 600, mimeType: "image/jpeg" }],
+      [20, { id: 20, url: "https://example.com/b.jpg", alt: "B", width: 800, height: 600, mimeType: "image/jpeg" }],
+    ]);
+    const { content, imageUrls } = transformPosts([post], new Map(), [], mediaMap);
+    expect(content[0].markdown).toContain("a.jpg");
+    expect(content[0].markdown).toContain("b.jpg");
+    expect(imageUrls).toContain("https://example.com/a.jpg");
+    expect(imageUrls).toContain("https://example.com/b.jpg");
+  });
+
+  test("gallery markers left as-is without mediaMap", () => {
+    const post = makePost({ content: '<p>text</p><!-- wp-gallery:10,20 -->' });
+    const { content } = transformPosts([post], new Map(), []);
+    // Without mediaMap, markers pass through (may be stripped by HTML→markdown)
+    expect(content[0].markdown).not.toContain("img");
   });
 });

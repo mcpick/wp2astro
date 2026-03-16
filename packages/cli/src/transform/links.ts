@@ -3,30 +3,35 @@ import type { WPPost } from "../types.js";
 /**
  * Build a map from old WordPress URLs to new Astro paths.
  */
-export function buildUrlMap(siteUrl: string, posts: WPPost[], pages: WPPost[]): Map<string, string> {
+function mapUrl(map: Map<string, string>, oldUrl: string, newPath: string) {
+  map.set(oldUrl, newPath);
+  if (oldUrl.endsWith("/")) {
+    map.set(oldUrl.slice(0, -1), newPath);
+  } else {
+    map.set(oldUrl + "/", newPath);
+  }
+}
+
+export function buildUrlMap(
+  siteUrl: string,
+  posts: WPPost[],
+  pages: WPPost[],
+  cptEntries: { restBase: string; posts: WPPost[] }[] = [],
+): Map<string, string> {
   const map = new Map<string, string>();
   const baseUrl = siteUrl.replace(/\/+$/, "");
 
   for (const post of posts) {
-    const oldUrl = post.link;
-    const newPath = `/blog/${post.slug}`;
-    map.set(oldUrl, newPath);
-    // Also map without trailing slash variant
-    if (oldUrl.endsWith("/")) {
-      map.set(oldUrl.slice(0, -1), newPath);
-    } else {
-      map.set(oldUrl + "/", newPath);
-    }
+    mapUrl(map, post.link, `/blog/${post.slug}`);
   }
 
   for (const page of pages) {
-    const oldUrl = page.link;
-    const newPath = `/${page.slug}`;
-    map.set(oldUrl, newPath);
-    if (oldUrl.endsWith("/")) {
-      map.set(oldUrl.slice(0, -1), newPath);
-    } else {
-      map.set(oldUrl + "/", newPath);
+    mapUrl(map, page.link, `/${page.slug}`);
+  }
+
+  for (const { restBase, posts: cptPosts } of cptEntries) {
+    for (const post of cptPosts) {
+      mapUrl(map, post.link, `/${restBase}/${post.slug}`);
     }
   }
 

@@ -7,7 +7,7 @@ import { serializeFrontmatter } from "../transform/frontmatter.js";
  */
 export async function writeContent(content: AstroContent[], outputDir: string): Promise<void> {
   for (const item of content) {
-    const dir = item.type === "post" ? "posts" : "pages";
+    const dir = item.type === "post" ? "posts" : item.type === "page" ? "pages" : item.type;
     const filePath = join(outputDir, "src", "content", dir, `${item.slug}.md`);
     const fileContent = `${serializeFrontmatter(item.frontmatter)}\n\n${item.markdown}\n`;
     await Bun.write(filePath, fileContent);

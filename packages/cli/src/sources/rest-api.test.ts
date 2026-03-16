@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { mapPost, decodeHtml, extractMainContent } from "./rest-api.js";
+import { mapPost, decodeHtml, extractMainContent, filterPostTypes } from "./rest-api.js";
 
 const basePost = {
   id: 1,
@@ -100,6 +100,11 @@ describe("mapPost", () => {
     const post = mapPost({ ...basePost, _embedded: { "wp:featuredmedia": [] } }, "post");
     expect(post.featuredImage).toBeUndefined();
   });
+
+  test("custom type string passed through", () => {
+    const post = mapPost({ ...basePost }, "project");
+    expect(post.type).toBe("project");
+  });
 });
 
 describe("decodeHtml", () => {
@@ -122,6 +127,87 @@ describe("decodeHtml", () => {
     };
     const post = mapPost(raw, "post");
     expect(post.title).toBe("Tom\u2019s & Jerry's");
+  });
+});
+
+describe("filterPostTypes", () => {
+  test("excludes builtin types", () => {
+    const data = {
+      post: { slug: "post", rest_base: "posts", name: "Posts" },
+      page: { slug: "page", rest_base: "pages", name: "Pages" },
+      attachment: { slug: "attachment", rest_base: "media", name: "Media" },
+      project: { slug: "project", rest_base: "project", name: "Projects" },
+    };
+    const result = filterPostTypes(data);
+    expect(result).toHaveLength(1);
+    expect(result[0].slug).toBe("project");
+    expect(result[0].restBase).toBe("project");
+  });
+
+  test("excludes wp_ prefixed types", () => {
+    const data = {
+      wp_block: { slug: "wp_block", rest_base: "blocks", name: "Reusable Blocks" },
+      wp_template: { slug: "wp_template", rest_base: "templates", name: "Templates" },
+      wp_navigation: { slug: "wp_navigation", rest_base: "navigation", name: "Navigation" },
+      portfolio: { slug: "portfolio", rest_base: "portfolio", name: "Portfolio" },
+    };
+    const result = filterPostTypes(data);
+    expect(result).toHaveLength(1);
+    expect(result[0].slug).toBe("portfolio");
+  });
+
+  test("excludes jetpack and elementor prefixed types", () => {
+    const data = {
+      jp_pay_order: { slug: "jp_pay_order", rest_base: "jp_pay_order", name: "Orders" },
+      jb_store_css: { slug: "jb_store_css", rest_base: "jb_store_css", name: "Store CSS" },
+      elementor_library: { slug: "elementor_library", rest_base: "elementor_library", name: "Templates" },
+      testimonial: { slug: "testimonial", rest_base: "testimonials", name: "Testimonials" },
+    };
+    const result = filterPostTypes(data);
+    expect(result).toHaveLength(1);
+    expect(result[0].slug).toBe("testimonial");
+    expect(result[0].restBase).toBe("testimonials");
+  });
+
+  test("excludes types without rest_base", () => {
+    const data = {
+      custom: { slug: "custom", name: "Custom" },
+    };
+    const result = filterPostTypes(data);
+    expect(result).toHaveLength(0);
+  });
+
+  test("excludes types with regex in rest_base", () => {
+    const data = {
+      wp_font_face: { slug: "wp_font_face", rest_base: "font-families/(?P<font_family_id>[\\d]+)/font-faces", name: "Font Faces" },
+    };
+    const result = filterPostTypes(data);
+    expect(result).toHaveLength(0);
+  });
+
+  test("excludes nav_menu_item", () => {
+    const data = {
+      nav_menu_item: { slug: "nav_menu_item", rest_base: "menu-items", name: "Navigation Menu Items" },
+    };
+    const result = filterPostTypes(data);
+    expect(result).toHaveLength(0);
+  });
+
+  test("returns multiple CPTs", () => {
+    const data = {
+      post: { slug: "post", rest_base: "posts", name: "Posts" },
+      page: { slug: "page", rest_base: "pages", name: "Pages" },
+      project: { slug: "project", rest_base: "project", name: "Projects", labels: { singular_name: "Project" } },
+      event: { slug: "event", rest_base: "events", name: "Events", labels: { singular_name: "Event" } },
+    };
+    const result = filterPostTypes(data);
+    expect(result).toHaveLength(2);
+    expect(result.map(r => r.slug).sort()).toEqual(["event", "project"]);
+    expect(result.find(r => r.slug === "project")!.label).toBe("Project");
+  });
+
+  test("empty data returns empty array", () => {
+    expect(filterPostTypes({})).toEqual([]);
   });
 });
 

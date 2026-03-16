@@ -1,6 +1,6 @@
 import { parse } from "node-html-parser";
 import type { SourceAdapter } from "./adapter.js";
-import type { WPComment, WPMedia, WPPost, WPSite, WPTaxonomy } from "../types.js";
+import type { WPComment, WPMedia, WPPost, WPPostType, WPSite, WPTaxonomy } from "../types.js";
 
 const CONTENT_SELECTORS = [
   ".entry-content",
@@ -59,7 +59,7 @@ export function decodeHtml(html: string): string {
     .replace(/&apos;/g, "'");
 }
 
-export function mapPost(raw: any, type: "post" | "page"): WPPost {
+export function mapPost(raw: any, type: string): WPPost {
   const embedded = raw._embedded ?? {};
 
   const featuredMedia = embedded["wp:featuredmedia"]?.[0];
@@ -152,9 +152,25 @@ export class RestApiAdapter implements SourceAdapter {
     return this.fetchCollection("pages", onProgress);
   }
 
-  private async fetchCollection(
-    type: "posts" | "pages",
+  async fetchPostTypes(): Promise<WPPostType[]> {
+    const res = await fetch(`${this.apiUrl}/wp/v2/types`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return filterPostTypes(data);
+  }
+
+  async fetchCustomPosts(
+    restBase: string,
+    typeName: string,
     onProgress?: (count: number, total: number) => void,
+  ): Promise<FetchResult> {
+    return this.fetchCollection(restBase, onProgress, typeName);
+  }
+
+  private async fetchCollection(
+    type: string,
+    onProgress?: (count: number, total: number) => void,
+    typeName?: string,
   ): Promise<FetchResult> {
     const results: WPPost[] = [];
     let page = 1;
@@ -176,8 +192,9 @@ export class RestApiAdapter implements SourceAdapter {
       }
 
       const items: any[] = await res.json();
+      const postType = typeName ?? (type === "pages" ? "page" : "post");
       for (const item of items) {
-        results.push(mapPost(item, type === "pages" ? "page" : "post"));
+        results.push(mapPost(item, postType));
       }
 
       onProgress?.(results.length, total);
@@ -209,4 +226,62 @@ export class RestApiAdapter implements SourceAdapter {
     };
   }
 
+  async fetchMediaByIds(ids: number[]): Promise<Map<number, WPMedia>> {
+    const map = new Map<number, WPMedia>();
+    for (let i = 0; i < ids.length; i += 100) {
+      const chunk = ids.slice(i, i + 100);
+      const res = await fetch(`${this.apiUrl}/wp/v2/media?include=${chunk.join(",")}&per_page=100`);
+      if (!res.ok) continue;
+      const items: any[] = await res.json();
+      for (const item of items) {
+        map.set(item.id, {
+          id: item.id,
+          url: item.source_url ?? item.link,
+          alt: item.alt_text ?? "",
+          width: item.media_details?.width ?? 0,
+          height: item.media_details?.height ?? 0,
+          mimeType: item.mime_type ?? "image/jpeg",
+        });
+      }
+    }
+    return map;
+  }
+
+  async fetchMediaByParent(parentId: number): Promise<WPMedia[]> {
+    const res = await fetch(`${this.apiUrl}/wp/v2/media?parent=${parentId}&per_page=100`);
+    if (!res.ok) return [];
+    const items: any[] = await res.json();
+    return items.map(item => ({
+      id: item.id,
+      url: item.source_url ?? item.link,
+      alt: item.alt_text ?? "",
+      width: item.media_details?.width ?? 0,
+      height: item.media_details?.height ?? 0,
+      mimeType: item.mime_type ?? "image/jpeg",
+    }));
+  }
+}
+
+const EXCLUDED_SLUGS = new Set([
+  "post", "page", "attachment", "nav_menu_item",
+]);
+
+const EXCLUDED_PREFIXES = ["wp_", "jp_", "jb_", "elementor_"];
+
+export function filterPostTypes(data: Record<string, any>): WPPostType[] {
+  const results: WPPostType[] = [];
+  for (const [key, value] of Object.entries(data)) {
+    const slug = value.slug ?? key;
+    if (EXCLUDED_SLUGS.has(slug)) continue;
+    if (EXCLUDED_PREFIXES.some(p => slug.startsWith(p))) continue;
+    const restBase = value.rest_base;
+    if (!restBase || /[(){}]/.test(restBase)) continue;
+    results.push({
+      name: value.name ?? slug,
+      slug,
+      restBase,
+      label: value.labels?.singular_name ?? value.name ?? slug,
+    });
+  }
+  return results;
 }
