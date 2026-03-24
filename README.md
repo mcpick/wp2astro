@@ -12,15 +12,11 @@ Convert WordPress sites to Astro projects. Powered by AI agents.
 ## Quick start
 
 ```sh
-# Clone and install
-git clone https://github.com/wp2astro/wp2astro.git
-cd wp2astro && pnpm install
-
 # Convert a WordPress site
-npx -y @wp2astro/convert convert --url https://myblog.com
+npx @wp2astro/convert convert --url https://myblog.com
 
 # Convert + extract design data for AI styling
-npx -y @wp2astro/convert convert --url https://myblog.com --scaffold
+npx @wp2astro/convert convert --url https://myblog.com --scaffold
 ```
 
 ## AI agent workflow
@@ -36,6 +32,6 @@ See the [CLI README](./packages/cli/README.md) for full docs.
 ## Development
 
 ```sh
-pnpm install        # Install all dependencies
-bun test            # Run CLI tests
+pnpm install         # Install all dependencies
+pnpm test            # Run CLI tests
 ```
